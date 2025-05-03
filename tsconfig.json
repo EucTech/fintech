@@ -14,5 +14,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ]
+, "src/screens/navigation/AppNavigation.tsx", "src/screens/navigation/AuthNavigation.tsx"  ]
 }
