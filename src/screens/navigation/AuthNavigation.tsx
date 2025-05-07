@@ -13,8 +13,8 @@ const AuthNavigation = () => {
       screenOptions={{
         headerShown: false,
         ...TransitionPresets.SlideFromRightIOS,
-        animation: true,
-        gesture: true,
+        // animation: true,
+        gestureEnabled: true,
         gestureDirection: 'horizontal',
       }}
     >
