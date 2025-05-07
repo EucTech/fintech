@@ -9,7 +9,7 @@ interface ButtonOutlineProps {
 
 const ButtonOutline: React.FC<ButtonOutlineProps> = ({title, action, children}) => {
   return (
-    <Pressable className='border-2 border-neutral-400 rounded-lg justify-center items-center py-4 flex-row space-x-2'
+    <Pressable className='border-2 border-neutral-400 rounded-lg justify-center items-center py-4 flex-row gap-3 space-x-2'
     onPress={action}
     >
       {children && <View>{children}</View>}
