@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -13,6 +14,7 @@ import Breaker from "@/src/components/Breaker";
 import ButtonOutline from "@/src/components/ButtonOutline";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { supabase } from "@/lib/supabase";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,7 +23,30 @@ const RegisterScreens = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { navigate: navigateAuth }: NavigationProp<AuthNavigationType> = useNavigation();
+  const { navigate: navigateAuth }: NavigationProp<AuthNavigationType> =
+    useNavigation();
+
+  async function signUpWithEmail() {
+    setIsLoading(true);
+
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (!session) {
+      Alert.alert("Register successfully. Please check your inbox for verification!");
+    }
+
+    if (error) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <View className="flex-1">
@@ -94,7 +119,7 @@ const RegisterScreens = () => {
             entering={FadeInDown.duration(100).delay(300).springify()}
           >
             <View className="pb-6">
-              <Button title={"Login"} />
+              <Button title={"Register"} action={() => signUpWithEmail()} />
             </View>
           </Animated.View>
 
@@ -126,10 +151,10 @@ const RegisterScreens = () => {
                 fontFamily: "PlusJakartaSansMedium",
               }}
             >
-            Have an account?{" "}
+              Have an account?{" "}
             </Text>
 
-            <Pressable onPress={()=> navigateAuth("Login")}>
+            <Pressable onPress={() => navigateAuth("Login")}>
               <Text
                 className="text-neutral-800 text-lg font-medium leading-[38px] text-center "
                 style={{
