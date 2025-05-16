@@ -5,6 +5,7 @@ import {
   Dimensions,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -13,6 +14,8 @@ import Breaker from "@/src/components/Breaker";
 import ButtonOutline from "@/src/components/ButtonOutline";
 import { AntDesign } from "@expo/vector-icons";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { supabase } from "@/lib/supabase";
+import { useUserStore } from "@/store/useUserStore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,8 +23,33 @@ const LoginScreens = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser, setSession } = useUserStore();
 
-  const { navigate: navigateAuth }: NavigationProp<AuthNavigationType> = useNavigation();
+  const { navigate: navigateAuth }: NavigationProp<AuthNavigationType> =
+    useNavigation();
+
+  async function signInWithEmail() {
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) {
+        setIsLoading(false);
+        Alert.alert("Login error", error.message);
+      }
+
+      if (data.session && data.user) {
+        setSession(data.session);
+        setUser(data.user);
+      }
+    } catch (error) {
+      console.log("Login Error:", error);
+    }
+  }
 
   return (
     <View className="flex-1">
@@ -95,7 +123,7 @@ const LoginScreens = () => {
             entering={FadeInDown.duration(100).delay(300).springify()}
           >
             <View className="pb-6">
-              <Button title={"Login"} />
+              <Button title={"Login"} action={() => signInWithEmail()} />
             </View>
           </Animated.View>
 
@@ -130,7 +158,7 @@ const LoginScreens = () => {
               Don't have an account?{" "}
             </Text>
 
-            <Pressable onPress={()=> navigateAuth("Register")}>
+            <Pressable onPress={() => navigateAuth("Register")}>
               <Text
                 className="text-neutral-800 text-lg font-medium leading-[38px] text-center "
                 style={{
