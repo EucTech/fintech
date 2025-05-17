@@ -5,6 +5,11 @@ const CoinDetailsScreen = () => {
   return (
     <View>
       <Text>CoinDetailsScreen</Text>
+      <Text>CoinDetailsScreen</Text>
+      <Text>CoinDetailsScreen</Text>
+      <Text>CoinDetailsScreen</Text>
+      <Text>CoinDetailsScreen</Text>
+      <Text>CoinDetailsScreen</Text>
     </View>
   )
 }
