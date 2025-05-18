@@ -3,8 +3,8 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from "@react-navigation/stack";
-import HomeScreen from "../../tabs/home/homeScreen";
 import CoinDetailsScreen from "../../stacks/CoinDetailsScreen";
+import HomeScreen from "../../tabs/home/HomeScreen";
 
 const Stack = createStackNavigator();
 
